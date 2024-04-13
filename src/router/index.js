@@ -5,16 +5,8 @@ import {
   createWebHistory,
   createWebHashHistory
 } from 'vue-router'
+import { useAuthStore } from 'src/stores/auth' // Assurez-vous que le chemin est correct
 import routes from './routes'
-
-/*
- * If not building with SSR mode, you can
- * directly export the Router instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Router instance.
- */
 
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
@@ -29,15 +21,11 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
-  // Ajouter une vérification avant chaque navigation
   Router.beforeEach((to, from, next) => {
-    const isAuthenticated = localStorage.getItem('isAuthenticated')
-    // Vérifier si la route cible nécessite une authentification
-    if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
-      // Si l'utilisateur n'est pas authentifié, rediriger vers la page de connexion
-      next({ path: '/login' })
+    const authStore = useAuthStore() // Utiliser Pinia pour l'état d'authentification
+    if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.user) {
+      next({ name: 'login' }) // Assurez-vous que vous avez une route nommée 'login'
     } else {
-      // Sinon, continuer la navigation
       next()
     }
   })

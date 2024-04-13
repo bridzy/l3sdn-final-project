@@ -1,54 +1,44 @@
 <template>
   <q-page class="flex flex-center">
-    <q-card style="width: 350px">
+    <q-card class="q-pa-md" style="width: 90%; max-width: 400px">
+      <q-card-section class="text-h6" style="text-align: center"> Inscription </q-card-section>
       <q-card-section>
-        <div class="text-h6">Inscription</div>
-      </q-card-section>
-
-      <q-card-section>
-        <q-form @submit.prevent="onSignUp">
-          <q-input v-model="signupDetails.username" filled label="Nom d'utilisateur" />
-          <q-input v-model="signupDetails.password" filled label="Mot de passe" type="password" />
-          <div class="q-mt-md">
-            <q-btn label="Inscription" type="submit" color="primary" />
-          </div>
-        </q-form>
+        <SignUpForm @signup="handleSignUp" />
       </q-card-section>
     </q-card>
   </q-page>
 </template>
 
 <script>
+import SignUpForm from 'components/SignUpForm.vue' // Assurez-vous que le chemin est correct
+
 export default {
-  data() {
-    return {
-      signupDetails: {
-        username: '',
-        password: ''
-      }
-    }
+  components: {
+    SignUpForm
   },
   methods: {
-    onSignUp() {
+    handleSignUp(signupDetails) {
       const users = JSON.parse(localStorage.getItem('users')) || []
-      if (!users.find((u) => u.username === this.signupDetails.username)) {
-        users.push(this.signupDetails)
-        localStorage.setItem('users', JSON.stringify(users))
-        this.$q.notify({
-          color: 'positive',
-          position: 'top',
-          message: 'Inscription réussie. Veuillez vous connecter.',
-          icon: 'check_circle'
-        })
-        this.$router.replace({ name: 'Login' })
-      } else {
-        this.$q.notify({
-          color: 'negative',
-          position: 'top',
-          message: 'Le nom d’utilisateur existe déjà',
-          icon: 'error'
-        })
+      if (
+        users.some(
+          (user) => user.username === signupDetails.username || user.email === signupDetails.email
+        )
+      ) {
+        this.$q.notify({ color: 'negative', message: 'Nom d’utilisateur ou email déjà utilisé.' })
+        return
       }
+      users.push({
+        fullName: signupDetails.fullName,
+        email: signupDetails.email,
+        username: signupDetails.username,
+        password: signupDetails.password
+      })
+      localStorage.setItem('users', JSON.stringify(users))
+      this.$q.notify({
+        color: 'positive',
+        message: 'Inscription réussie. Veuillez vous connecter.'
+      })
+      this.$router.push('/login')
     }
   }
 }
