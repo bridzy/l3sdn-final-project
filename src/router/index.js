@@ -5,10 +5,9 @@ import {
   createWebHistory,
   createWebHashHistory
 } from 'vue-router'
-import { useAuthStore } from 'src/stores/auth' // Assurez-vous que le chemin est correct
 import routes from './routes'
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function ({ store }) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : process.env.VUE_ROUTER_MODE === 'history'
@@ -22,9 +21,11 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to, from, next) => {
-    const authStore = useAuthStore() // Utiliser Pinia pour l'état d'authentification
-    if (to.matched.some((record) => record.meta.requiresAuth) && !authStore.user) {
-      next({ name: 'login' }) // Assurez-vous que vous avez une route nommée 'login'
+    // Ici, vous pourriez vérifier un flag spécifique ou un token dans localStorage
+    const isAuthenticated = localStorage.getItem('isAuthenticated')
+
+    if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
+      next({ name: 'login' })
     } else {
       next()
     }

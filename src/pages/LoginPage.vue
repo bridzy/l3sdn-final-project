@@ -7,17 +7,27 @@
 
       <q-card-section>
         <q-form class="q-gutter-md" @submit.prevent="login">
-          <q-input v-model="username" filled label="Nom d'utilisateur" :error="errors.username" />
+          <q-input
+            v-model="username"
+            filled
+            label="Nom d'utilisateur"
+            :error="!!errors.username || !!loginError"
+            :error-message="errors.username || loginError"
+          />
           <q-input
             v-model="password"
             filled
             label="Mot de passe"
             type="password"
-            :error="errors.password"
+            :error="!!errors.password || !!loginError"
+            :error-message="errors.password || loginError"
           />
+
           <div class="row justify-center q-mt-md">
             <q-btn label="Se connecter" type="submit" color="primary" />
           </div>
+          <!-- Afficher le message d'erreur de connexion si présent -->
+          <div v-if="loginError" class="text-negative q-mt-md">{{ loginError }}</div>
         </q-form>
       </q-card-section>
 
@@ -30,6 +40,7 @@
 
 <script>
 import { useAuthStore } from 'src/stores/auth'
+import { useRouter } from 'vue-router'
 
 export default {
   data() {
@@ -39,13 +50,18 @@ export default {
       errors: {
         username: null,
         password: null
-      }
+      },
+      loginError: null // Ajout d'un état pour gérer les erreurs de connexion
     }
   },
+  setup() {
+    const router = useRouter()
+    const authStore = useAuthStore()
+    return { router, authStore }
+  },
   methods: {
-    login() {
-      // Reset errors
-      this.errors.username = this.errors.password = null
+    async login() {
+      this.errors.username = this.errors.password = this.loginError = null
 
       if (!this.username || !this.password) {
         if (!this.username) this.errors.username = "Nom d'utilisateur requis"
@@ -53,18 +69,32 @@ export default {
         return
       }
 
-      const authStore = useAuthStore()
-      const success = authStore.login(this.username, this.password)
+      const response = this.authStore.login(this.username, this.password)
 
-      if (success) {
-        this.$router.push({ name: 'dashboard' })
+      if (!response.success) {
+        this.loginError = response.message || 'Erreur de connexion' // Utilisez le message d'erreur retourné par la tentative de connexion
       } else {
-        this.errors.username = 'Nom d’utilisateur ou mot de passe incorrect'
+        let redirectRoute = ''
+        switch (response.role) {
+          case 'managerEntretien':
+            redirectRoute = '/dashboard-manager-entretien'
+            break
+          case 'manager':
+            redirectRoute = '/dashboard-manager'
+            break
+          case 'responsableManager':
+            redirectRoute = '/dashboard-responsable-manager'
+            break
+          default:
+            this.loginError = 'Role non reconnu ou manquant'
+            return
+        }
+        this.router.push(redirectRoute).catch((err) => {})
       }
     },
     forgotPassword() {
-      // Logique pour mot de passe oublié
       console.log('Mot de passe oublié ?')
+      // Implémentation de la logique pour le mot de passe oublié
     }
   }
 }

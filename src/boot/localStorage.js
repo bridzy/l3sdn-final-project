@@ -1,8 +1,8 @@
 export default ({ app }) => {
   const users = [
-    { id: 1, username: 'managerEntretien', password: 'password', role: 'managerEntretien' },
-    { id: 2, username: 'manager', password: 'password', role: 'manager' },
-    { id: 3, username: 'responsableManager', password: 'password', role: 'responsableManager' }
+    { id: 1, username: 'responsable', password: 'resp123', role: 'responsable' },
+    { id: 2, username: 'manager', password: 'man123', role: 'manager' },
+    { id: 3, username: 'manage', password: 'manag123', role: 'manage' }
   ]
 
   if (!localStorage.getItem('users')) {
