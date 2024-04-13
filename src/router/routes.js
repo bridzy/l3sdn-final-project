@@ -6,27 +6,23 @@ const routes = [
       { path: '', redirect: '/login' }, // Redirection de la racine vers la page de connexion
       { path: 'login', component: () => import('pages/LoginPage.vue') }, // Page de connexion
       {
-        // Tableau de bord pour le "Manager d'Entretien"
-        path: 'dashboard-manager-entretien',
-        name: 'dashboard-manager-entretien',
-        component: () => import('pages/DashboardManagerEntretien.vue'),
-        meta: { requiresAuth: true } // Protection de la route
+        path: 'dashboard-responsable',
+        name: 'dashboard-responsable',
+        component: () => import('pages/DashboardResponsable.vue'),
+        meta: { requiresAuth: true }
       },
       {
-        // Tableau de bord pour le "Manager"
         path: 'dashboard-manager',
         name: 'dashboard-manager',
         component: () => import('pages/DashboardManager.vue'),
-        meta: { requiresAuth: true } // Protection de la route
+        meta: { requiresAuth: true }
       },
       {
-        // Tableau de bord pour le "Responsable Manager"
-        path: 'dashboard-responsable-manager',
-        name: 'dashboard-responsable-manager',
-        component: () => import('pages/DashboardResponsableManager.vue'),
-        meta: { requiresAuth: true } // Protection de la route
-      },
-      { path: 'signup', component: () => import('pages/SignUpPage.vue') } // Page d'inscription
+        path: 'dashboard-manage',
+        name: 'dashboard-manage',
+        component: () => import('pages/DashboardManage.vue'),
+        meta: { requiresAuth: true }
+      }
     ]
   },
   {

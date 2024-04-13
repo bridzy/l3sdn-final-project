@@ -1,4 +1,4 @@
-export default ({ app }) => {
+export default () => {
   const users = [
     { id: 1, username: 'responsable', password: 'resp123', role: 'responsable' },
     { id: 2, username: 'manager', password: 'man123', role: 'manager' },

@@ -1,5 +1,11 @@
 <template>
   <q-page>
-    <div>Tableau de bord du Responsable</div>
+    <h1>Tableau de bord Responsable</h1>
   </q-page>
 </template>
+
+<script>
+export default {
+  name: 'DashboardResponsable'
+}
+</script>

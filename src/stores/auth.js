@@ -22,17 +22,12 @@ export const useAuthStore = defineStore('auth', {
       initializeUsers() // Assurez-vous que les utilisateurs sont initialisés lors de l'utilisation du store
     },
     login(username, password) {
-      console.log('Tentative de connexion pour :', username, password)
       const users = JSON.parse(localStorage.getItem('users') || '[]')
-      console.log('Utilisateurs chargés depuis localStorage:', users)
-
       const user = users.find((u) => u.username === username && u.password === password)
       if (user) {
-        console.log('Utilisateur connecté avec succès:', user)
-        this.user = user
-        return { success: true }
+        this.user = user // Connexion réussie
+        return { success: true, role: user.role }
       } else {
-        console.log('Échec de la connexion pour:', username)
         return { success: false, message: "Nom d'utilisateur ou mot de passe incorrect" }
       }
     },

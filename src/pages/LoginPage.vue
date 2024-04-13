@@ -61,35 +61,24 @@ export default {
   },
   methods: {
     async login() {
-      this.errors.username = this.errors.password = this.loginError = null
-
-      if (!this.username || !this.password) {
-        if (!this.username) this.errors.username = "Nom d'utilisateur requis"
-        if (!this.password) this.errors.password = 'Mot de passe requis'
-        return
-      }
-
-      const response = this.authStore.login(this.username, this.password)
-
-      if (!response.success) {
-        this.loginError = response.message || 'Erreur de connexion' // Utilisez le message d'erreur retourné par la tentative de connexion
-      } else {
+      const response = await this.authStore.login(this.username, this.password)
+      if (response.success) {
+        // Redirection en fonction du rôle
         let redirectRoute = ''
         switch (response.role) {
-          case 'managerEntretien':
-            redirectRoute = '/dashboard-manager-entretien'
+          case 'responsable':
+            redirectRoute = '/dashboard-responsable'
             break
           case 'manager':
             redirectRoute = '/dashboard-manager'
             break
-          case 'responsableManager':
-            redirectRoute = '/dashboard-responsable-manager'
+          case 'manage':
+            redirectRoute = '/dashboard-manage'
             break
-          default:
-            this.loginError = 'Role non reconnu ou manquant'
-            return
         }
-        this.router.push(redirectRoute).catch((err) => {})
+        this.$router.push(redirectRoute)
+      } else {
+        this.loginError = response.message
       }
     },
     forgotPassword() {
