@@ -56,25 +56,41 @@ export default {
       showAddManage: false,
       newManager: { username: '', password: '' }, // Exemple simplifié
       managers: [] // Liste des managers pour l'affichage
-      // Managés non inclus dans cet exemple pour simplifier
     }
   },
+  created() {
+    this.loadManagers() // Chargez les managers existants lors de la création du composant
+  },
   methods: {
+    loadManagers() {
+      // Charge tous les managers de localStorage au démarrage
+      const users = JSON.parse(localStorage.getItem('users') || '[]')
+      this.managers = users.filter((user) => user.role === 'manager')
+    },
     addManager() {
-      // Ici, vous ajouteriez le manager à votre liste et/ou base de données
-      console.log('Ajouter le manager:', this.newManager)
-      this.managers.push({ ...this.newManager, id: Date.now() }) // Simplification
+      const newManager = { ...this.newManager, id: Date.now(), role: 'manager' }
+      this.managers.push(newManager)
+
+      // Met à jour localStorage avec le nouveau manager
+      const users = JSON.parse(localStorage.getItem('users') || '[]')
+      users.push(newManager)
+      localStorage.setItem('users', JSON.stringify(users))
+
       this.newManager = { username: '', password: '' }
       this.showAddManager = false
     },
     editManager(manager) {
-      // Logique pour modifier un manager
       console.log('Modifier le manager:', manager)
+      // Ici, vous intégrerez la logique de modification
     },
     deleteManager(managerId) {
-      // Logique pour supprimer un manager
       console.log("Supprimer le manager avec l'ID:", managerId)
       this.managers = this.managers.filter((manager) => manager.id !== managerId)
+
+      // Supprime également le manager de localStorage
+      const users = JSON.parse(localStorage.getItem('users'))
+      const updatedUsers = users.filter((user) => user.id !== managerId)
+      localStorage.setItem('users', JSON.stringify(updatedUsers))
     }
     // Méthodes pour ajouter, éditer, supprimer des managés seraient similaires
   }

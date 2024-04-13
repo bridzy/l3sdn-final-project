@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth', {
       const users = JSON.parse(localStorage.getItem('users') || '[]')
       const user = users.find((u) => u.username === username && u.password === password)
       if (user) {
-        this.user = user // Connexion réussie
+        this.user = user
         return { success: true, role: user.role }
       } else {
         return { success: false, message: "Nom d'utilisateur ou mot de passe incorrect" }
