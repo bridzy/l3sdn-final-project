@@ -1,43 +1,71 @@
-export default () => {
-  // Fonction pour initialiser les utilisateurs par défaut
+export default function setupLocalStorage() {
+  // Initialisation des utilisateurs par défaut
   function initializeUsers() {
     const defaultUsers = [
-      { id: 1, username: 'responsable', password: 'resp123', role: 'responsable' },
-      { id: 2, username: 'manager', password: 'man123', role: 'manager' },
-      { id: 3, username: 'manage', password: 'manag123', role: 'manage' }
+      // Définition des utilisateurs par défaut
     ]
 
-    // Vérifie si les utilisateurs existent déjà pour éviter de les écraser
     if (!localStorage.getItem('users')) {
       localStorage.setItem('users', JSON.stringify(defaultUsers))
     }
   }
 
-  // Appel de la fonction d'initialisation des utilisateurs
-  initializeUsers()
-
-  // Fonction globale pour ajouter un nouvel utilisateur
-  window.addUser = function (username, password, role) {
+  // Génération d'un ID utilisateur unique
+  function generateUserId() {
     const users = JSON.parse(localStorage.getItem('users') || '[]')
-    const newUser = {
-      // Utilisation de Date.now() pour un ID unique pourrait être mieux pour éviter les doublons
-      id: Date.now(),
-      username,
-      password,
-      role
+    return users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1
+  }
+
+  const userActions = {
+    // Ajout d'un nouvel utilisateur
+    addUser(username, password, role) {
+      const users = JSON.parse(localStorage.getItem('users') || '[]')
+      const newUser = {
+        id: generateUserId(),
+        username,
+        password, // Dans un cas réel, le mot de passe devrait être hashé
+        role,
+        ...(role === 'manager' ? { managed: [], entretiens: {} } : {})
+      }
+      users.push(newUser)
+      localStorage.setItem('users', JSON.stringify(users))
+    },
+
+    // Modification d'un utilisateur existant
+    modifyUser(id, modifications) {
+      const users = JSON.parse(localStorage.getItem('users') || '[]')
+      const index = users.findIndex((user) => user.id === id)
+      if (index !== -1) {
+        users[index] = { ...users[index], ...modifications }
+        localStorage.setItem('users', JSON.stringify(users))
+      } else {
+        console.error('Utilisateur non trouvé.')
+      }
+    },
+
+    // Suppression d'un utilisateur
+    deleteUser(id) {
+      const users = JSON.parse(localStorage.getItem('users') || '[]').filter(
+        (user) => user.id !== id
+      )
+      localStorage.setItem('users', JSON.stringify(users))
+    },
+
+    // Récupération de la liste de tous les utilisateurs
+    getUsers() {
+      return JSON.parse(localStorage.getItem('users') || '[]')
+    },
+
+    // Récupération d'un utilisateur spécifique par son ID
+    getUserById(id) {
+      const users = JSON.parse(localStorage.getItem('users') || '[]')
+      return users.find((user) => user.id === id)
     }
-    users.push(newUser)
-    localStorage.setItem('users', JSON.stringify(users))
   }
 
-  // Fonction globale pour récupérer tous les utilisateurs (pour débogage ou gestion)
-  window.getUsers = function () {
-    return JSON.parse(localStorage.getItem('users') || '[]')
-  }
+  // Exposition des actions utilisateur globalement
+  window.userActions = userActions
 
-  // Fonction globale pour effacer tous les utilisateurs (peut être utile pour la réinitialisation)
-  window.clearUsers = function () {
-    localStorage.removeItem('users')
-    initializeUsers() // Ré-initialiser avec les utilisateurs par défaut après nettoyage
-  }
+  // Initialisation des utilisateurs
+  initializeUsers()
 }
