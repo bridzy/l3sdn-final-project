@@ -20,12 +20,24 @@ export default () => {
   window.addUser = function (username, password, role) {
     const users = JSON.parse(localStorage.getItem('users') || '[]')
     const newUser = {
-      id: users.length + 1, // Attribution d'un ID simple basé sur la longueur. À adapter selon vos besoins.
+      // Utilisation de Date.now() pour un ID unique pourrait être mieux pour éviter les doublons
+      id: Date.now(),
       username,
       password,
       role
     }
     users.push(newUser)
     localStorage.setItem('users', JSON.stringify(users))
+  }
+
+  // Fonction globale pour récupérer tous les utilisateurs (pour débogage ou gestion)
+  window.getUsers = function () {
+    return JSON.parse(localStorage.getItem('users') || '[]')
+  }
+
+  // Fonction globale pour effacer tous les utilisateurs (peut être utile pour la réinitialisation)
+  window.clearUsers = function () {
+    localStorage.removeItem('users')
+    initializeUsers() // Ré-initialiser avec les utilisateurs par défaut après nettoyage
   }
 }
