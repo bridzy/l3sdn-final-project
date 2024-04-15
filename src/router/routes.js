@@ -3,8 +3,8 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', redirect: '/login' }, // Redirection de la racine vers la page de connexion
-      { path: 'login', component: () => import('pages/LoginPage.vue') }, // Page de connexion
+      { path: '', redirect: '/login' },
+      { path: 'login', component: () => import('pages/LoginPage.vue') },
       {
         path: 'dashboard-responsable',
         name: 'dashboard-responsable',
@@ -25,10 +25,7 @@ const routes = [
       }
     ]
   },
-  {
-    path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue') // Gestion des routes non trouvées (404)
-  }
+  { path: '/:catchAll(.*)*', component: () => import('pages/ErrorNotFound.vue') }
 ]
 
 export default routes

@@ -3,6 +3,10 @@ export default function setupLocalStorage() {
   function initializeUsers() {
     const defaultUsers = [
       // Définition des utilisateurs par défaut
+    { id: 1, username: 'responsable', password: 'resp123', role: 'responsable' },
+    { id: 2, username: 'manager', password: 'man123', role: 'manager' },
+    { id: 3, username: 'manage', password: 'manag123', role: 'manage', entretienDate: '2023-04-15', managerName: 'manager' }
+  
     ]
 
     if (!localStorage.getItem('users')) {

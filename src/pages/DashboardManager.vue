@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       manages: [],
-      currentManage: { id: null, username: '', password: '', entretienDate: '' },
+      currentManage: { id: null, username: '', password: '', entretienDate: '', managerName: '' },
       dialogOpen: false,
       scheduleDialogOpen: false
     }
@@ -62,7 +62,7 @@ export default {
     openManageDialog(manage) {
       this.currentManage = manage
         ? { ...manage }
-        : { id: null, username: '', password: '', entretienDate: '' }
+        : { id: null, username: '', password: '', entretienDate: '', managerName: '' }
       this.dialogOpen = true
     },
     openScheduleDialog(manage) {
@@ -70,17 +70,22 @@ export default {
       this.scheduleDialogOpen = true
     },
     saveManage() {
+      // Ajustez pour inclure le nom du manager lors de l'ajout ou de la modification d'un managé
+      const managerName = 'Nom du Manager' // Remplacez cela par la logique pour obtenir le nom du manager actuel
       if (!this.currentManage.id) {
         window.userActions.addUser(
           this.currentManage.username,
           this.currentManage.password,
-          'manage'
+          'manage',
+          this.currentManage.entretienDate,
+          managerName // Sauvegardez également le nom du manager
         )
       } else {
         window.userActions.modifyUser(this.currentManage.id, {
           username: this.currentManage.username,
-          password: this.currentManage.password
-          // Assurez-vous d'inclure entretienDate si vous la modifiez aussi dans ce dialogue
+          password: this.currentManage.password,
+          entretienDate: this.currentManage.entretienDate, // Assurez-vous d'inclure entretienDate si vous la modifiez aussi dans ce dialogue
+          managerName // Mettez à jour le nom du manager
         })
       }
       this.resetDialog()
@@ -91,19 +96,21 @@ export default {
       this.loadManages()
     },
     saveEntretien() {
+      // Assurez-vous d'inclure et de mettre à jour le nom du manager ici également
+      const managerName = 'Nom du Manager' // Remplacez cela par la logique pour obtenir le nom du manager actuel
       window.userActions.modifyUser(this.currentManage.id, {
-        entretienDate: this.currentManage.entretienDate
+        entretienDate: this.currentManage.entretienDate,
+        managerName // Sauvegardez le nom du manager responsable de l'entretien
       })
       this.resetScheduleDialog()
       this.loadManages()
     },
     resetDialog() {
       this.dialogOpen = false
-      this.currentManage = { id: null, username: '', password: '', entretienDate: '' }
+      this.currentManage = { id: null, username: '', password: '', entretienDate: '', managerName: '' }
     },
     resetScheduleDialog() {
       this.scheduleDialogOpen = false
-      // Pas besoin de réinitialiser currentManage ici si vous voulez garder les modifications non enregistrées accessibles
     }
   },
   created() {

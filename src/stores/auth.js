@@ -15,7 +15,8 @@ function initializeUsers() {
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: null // Stocke l'utilisateur actuellement connecté
+    user: null, // Stocke l'utilisateur actuellement connecté
+    isAuthenticated: false, // Ajout pour suivre l'état d'authentification
   }),
   actions: {
     initialize() {
@@ -26,6 +27,8 @@ export const useAuthStore = defineStore('auth', {
       const user = users.find((u) => u.username === username && u.password === password)
       if (user) {
         this.user = user
+        this.isAuthenticated = true // Mettez à jour l'état d'authentification
+        localStorage.setItem('isAuthenticated', 'true') // Stocke l'état d'authentification dans localStorage
         return { success: true, role: user.role }
       } else {
         return { success: false, message: "Nom d'utilisateur ou mot de passe incorrect" }
@@ -33,7 +36,9 @@ export const useAuthStore = defineStore('auth', {
     },
 
     logout() {
-      this.user = null // Efface l'utilisateur connecté
+      this.user = null
+      this.isAuthenticated = false // Réinitialise l'état d'authentification
+      localStorage.removeItem('isAuthenticated') // Supprime l'état d'authentification de localStorage
     },
     resetUsers() {
       initializeUsers() // Peut être utilisé pour réinitialiser les utilisateurs dans le localStorage
