@@ -1,19 +1,25 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated>
+    <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-toolbar-title>
-          Mon Application
-          <!-- Message de bienvenue -->
-          <span v-if="authStore.user">: Bienvenue, {{ authStore.user.username }}</span>
-        </q-toolbar-title>
+        <q-avatar
+          icon="home"
+          class="q-mr-sm cursor-pointer"
+          @click="handleHomeClick"
+        />
+        Mon Application
+        <q-badge v-if="authStore.user" color="green" floating class="q-ml-sm">
+          Bienvenue, {{ authStore.user.username }}
+        </q-badge>
 
-        <!-- Affichage conditionnel basé sur si un utilisateur est connecté -->
-        <div v-if="authStore.user" class="q-ml-auto flex items-center">
-          <!-- Bouton de déconnexion et icône, affichés seulement si un utilisateur est connecté -->
-          <q-btn flat @click="logout">{{ authStore.user.username }}</q-btn>
-          <q-btn icon="logout" @click="logout"></q-btn>
-        </div>
+        <q-btn
+          v-if="authStore.user"
+          flat
+          class="q-ml-auto"
+          label="Déconnexion"
+          icon="logout"
+          @click="logout"
+        />
       </q-toolbar>
     </q-header>
 
@@ -24,20 +30,34 @@
 </template>
 
 <script>
-import { useAuthStore } from 'src/stores/auth' // Vérifiez que le chemin d'accès est correct.
+import { useAuthStore } from 'src/stores/auth' // Assurez-vous que le chemin est correct
 import { useRouter } from 'vue-router'
 
 export default {
   setup() {
     const authStore = useAuthStore()
-    const router = useRouter() // Utilisez useRouter pour accéder à l'instance du routeur.
+    const router = useRouter()
 
     const logout = () => {
-      authStore.logout() // Appeler la méthode logout du store d'authentification.
-      router.push('/login') // Redirection vers la page de connexion.
+      authStore.logout() // Appel de la méthode logout du store d'authentification
+      router.push('/login') // Redirection vers la page de connexion
     }
 
-    return { authStore, logout }
-  }
+    const handleHomeClick = () => {
+      if (authStore.user) {
+        logout()
+      } else {
+        router.push('/login') // Redirection vers la page de connexion si non connecté
+      }
+    }
+
+    return { authStore, logout, handleHomeClick }
+  },
 }
 </script>
+
+<style>
+.cursor-pointer {
+  cursor: pointer;
+}
+</style>

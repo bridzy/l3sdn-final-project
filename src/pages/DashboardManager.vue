@@ -1,9 +1,10 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md dashboard-manager">
     <div class="text-h6 q-mb-md">Gestion des Managés</div>
     <q-btn color="primary" label="Ajouter un Managé" @click="openManageDialog({})" />
+
     <q-list bordered class="q-mt-md">
-      <q-item v-for="manage in manages" :key="manage.id">
+      <q-item v-for="manage in manages" :key="manage.id" class="manage-item">
         <q-item-section>
           {{ manage.username }} - Entretien: {{ manage.entretienDate || 'Non planifié' }}
         </q-item-section>
@@ -118,3 +119,4 @@ export default {
   }
 }
 </script>
+
