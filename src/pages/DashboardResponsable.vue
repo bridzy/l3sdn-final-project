@@ -174,3 +174,58 @@ export default {
   }
 }
 </script>
+<style scoped>
+:root {
+  --primary-color: #027BE3;
+  --secondary-color: #26A69A;
+  --background-color: #f8f9fa;
+  --text-color: #495057;
+}
+
+.dashboard-responsable {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.dashboard-responsable .header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-responsable .action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.dashboard-responsable .action-button {
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-responsable h2 {
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.dashboard-responsable .q-list {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.dashboard-responsable .q-item {
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-responsable .q-item:hover {
+  background-color: var(--secondary-color);
+  color: rgb(168, 66, 66);
+}
+
+.q-item-section {
+  flex-grow: 1;
+}
+</style>

@@ -65,4 +65,38 @@ export default {
   },
 }
 </script>
+<style scoped>
+.dashboard-manage .entretien-section {
+  max-width: 800px;
+  margin: auto;
+  text-align: left;
+}
 
+h2 {
+  color: #027BE3;
+}
+
+.entretien-info, .manager-info {
+  background: #F0F0F0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.no-entretien {
+  color: #606060;
+  background: #FFF0F0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+p {
+  margin: 0;
+  padding: 4px 0;
+}
+
+span {
+  font-weight: bold;
+}
+</style>

@@ -119,4 +119,15 @@ export default {
   }
 }
 </script>
+<style scoped>
+.dashboard-manager .manage-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.q-btn {
+  margin-right: 8px;
+}
+
+</style>
