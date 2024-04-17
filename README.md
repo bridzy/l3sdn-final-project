@@ -13,9 +13,9 @@ const users = [
 ];
 
 localStorage.setItem('users', JSON.stringify(users));
-""
+```
 
-#Quasar App (quasar-project)
+# Quasar App (quasar-project)
 
 A Quasar Project
 
