@@ -53,9 +53,20 @@ export default {
     }
 
     const toggleDarkMode = () => {
-      $q.dark.toggle()
+      $q.dark.toggle() // Bascule le mode sombre
+      updateBackgroundImage()
     }
 
+    const updateBackgroundImage = () => {
+      // Définir les chemins d'accès à vos images de fond pour les modes
+      const darkBackgroundImage = "url('/src/assets/dark.jpg')" // Assurez-vous que ce chemin est correct
+      const lightBackgroundImage = "url('/src/assets/test.jpg')" // Assurez-vous que ce chemin est correct
+      
+      // Appliquer l'image de fond en fonction du mode actif
+      document.body.style.backgroundImage = $q.dark
+      .isActive ? darkBackgroundImage : lightBackgroundImage
+    }
+    
     return { authStore, logout, handleHomeClick, toggleDarkMode }
   },
 }

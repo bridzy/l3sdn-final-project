@@ -1,40 +1,56 @@
 // src/css/app.scss
-
 @import 'quasar.variables.scss';
 
-// Appliquer le fond et ajuster la couleur de base du texte
-body {
-    background-image: url('/src/assets/test.jpg'); // Assurez-vous que le chemin de l'image est correct
+// src/css/app.scss
+
+:root {
+    --background-light: url('/src/assets/test.jpg'); // Chemin pour le mode clair
+    --background-dark: url('/src/assets/dark.jpg'); // Chemin pour le mode sombre
+    --text-color-light: #000; // Texte pour le mode clair
+    --text-color-dark: #e0e0e0; // Texte pour le mode sombre
+    // Autres variables...
+  }
+  
+  body {
+    background-image: var(--background-image);
     background-size: cover;
     background-position: center center;
-    background-attachment: fixed; // Empêche l'image de défiler avec le contenu
-    color: $text-color;
+    background-attachment: fixed;
+    color: var(--text-color);
+    transition: background-image 0.5s ease-in-out, color 0.5s ease-in-out; // Transition douce pour le changement d'image et de couleur
   }
+  
+  [data-theme='dark'] {
+    --background-image: var(--background-dark);
+    --text-color: var(--text-color-dark);
+  }
+  
+  [data-theme='light'], :root {
+    --background-image: var(--background-light);
+    --text-color: var(--text-color-light);
+  }
+  
 
-// Styles des boutons pour adoucir les angles et ajouter une ombre subtile
 .q-btn {
-  border-radius: $border-radius;
-  box-shadow: $shadow;
+  border-radius: var(--btn-border-radius);
+  box-shadow: var(--btn-box-shadow);
 }
 
-// Styles pour adoucir les listes, cartes et barres d'outils
 .q-list, .q-card, .q-toolbar {
-  border-radius: $border-radius;
-  box-shadow: $shadow;
+  border-radius: var(--btn-border-radius);
+  box-shadow: var(--btn-box-shadow);
 }
 
-// Personnaliser le header pour qu'il se démarque
 .q-header {
-  background-color: $primary;
+  background-color: var(--header-background-color);
   color: #ffffff;
 }
 
-// Ajout d'un peu de personnalité aux avatars et badges
 .q-avatar {
-  border-radius: 50%;
+  border-radius: var(--avatar-border-radius);
 }
 
 .q-badge {
-  border-radius: $border-radius;
-  box-shadow: $shadow;
+  border-radius: var(--badge-border-radius);
+  box-shadow: var(--badge-box-shadow);
 }
