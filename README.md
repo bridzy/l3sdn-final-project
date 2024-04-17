@@ -15,6 +15,9 @@ const users = [
 localStorage.setItem('users', JSON.stringify(users));
 ```
 
+![image](https://github.com/bridzy/l3sdn-final-project/assets/114731267/b1a80291-0d7f-40de-8bc7-ce96c63ebbc8)
+
+
 # Quasar App (quasar-project)
 
 A Quasar Project
