@@ -66,6 +66,7 @@ export default {
       document.body.style.backgroundImage = $q.dark
       .isActive ? darkBackgroundImage : lightBackgroundImage
     }
+
     
     return { authStore, logout, handleHomeClick, toggleDarkMode }
   },
