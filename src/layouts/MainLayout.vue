@@ -60,7 +60,7 @@ export default {
     const updateBackgroundImage = () => {
       // Définir les chemins d'accès à vos images de fond pour les modes
       const darkBackgroundImage = "url('/src/assets/darky.svg')" // Assurez-vous que ce chemin est correct
-      const lightBackgroundImage = "url('/src/assets/test.jpg')" // Assurez-vous que ce chemin est correct
+      const lightBackgroundImage = "url('/src/assets/gene.gif')" // Assurez-vous que ce chemin est correct
       
       // Appliquer l'image de fond en fonction du mode actif
       document.body.style.backgroundImage = $q.dark
