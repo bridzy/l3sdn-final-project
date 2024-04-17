@@ -1,1 +1,40 @@
-// app global css in SCSS form
+// src/css/app.scss
+
+@import 'quasar.variables.scss';
+
+// Appliquer le fond et ajuster la couleur de base du texte
+body {
+    background-image: url('/src/assets/test.jpg'); // Assurez-vous que le chemin de l'image est correct
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed; // Empêche l'image de défiler avec le contenu
+    color: $text-color;
+  }
+
+// Styles des boutons pour adoucir les angles et ajouter une ombre subtile
+.q-btn {
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+}
+
+// Styles pour adoucir les listes, cartes et barres d'outils
+.q-list, .q-card, .q-toolbar {
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+}
+
+// Personnaliser le header pour qu'il se démarque
+.q-header {
+  background-color: $primary;
+  color: #ffffff;
+}
+
+// Ajout d'un peu de personnalité aux avatars et badges
+.q-avatar {
+  border-radius: 50%;
+}
+
+.q-badge {
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+}

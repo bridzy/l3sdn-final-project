@@ -32,16 +32,32 @@
 
     <!-- Dialog for Scheduling an Interview -->
     <q-dialog v-model="scheduleDialogOpen">
-      <q-card>
-        <q-card-section>
-          <q-input v-model="currentManage.entretienDate" type="date" label="Date d'entretien" />
-        </q-card-section>
-        <q-card-section align="right">
-          <q-btn flat label="Annuler" @click="resetScheduleDialog" />
-          <q-btn flat label="Planifier" @click="saveEntretien" />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
+    <q-card>
+      <q-card-section class="q-pt-md">
+        <div class="text-h6">Planifier un Entretien</div>
+        <!-- Nouveau modèle de sélection de date -->
+        <div class="q-pa-md" style="max-width: 300px">
+          <q-input v-model="currentManage.entretienDate" filled mask="date" :rules="['date']" label="Date d'entretien">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="currentManage.entretienDate">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Fermer" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
+      </q-card-section>
+      <q-card-section align="right">
+        <q-btn flat label="Annuler" @click="resetScheduleDialog" />
+        <q-btn flat label="Planifier" @click="saveEntretien" />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
   </q-page>
 </template>
 

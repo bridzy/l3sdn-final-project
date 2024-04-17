@@ -2,15 +2,14 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-avatar
-          icon="home"
-          class="q-mr-sm cursor-pointer"
-          @click="handleHomeClick"
-        />
+        <q-avatar icon="home" class="q-mr-sm cursor-pointer" @click="handleHomeClick" />
         Mon Application
         <q-badge v-if="authStore.user" color="green" floating class="q-ml-sm">
           Bienvenue, {{ authStore.user.username }}
         </q-badge>
+
+        <!-- Bouton pour basculer entre les thèmes clair et sombre -->
+        <q-btn icon="brightness_4" class="q-ml-md" @click="toggleDarkMode" />
 
         <q-btn
           v-if="authStore.user"
@@ -32,11 +31,13 @@
 <script>
 import { useAuthStore } from 'src/stores/auth' // Assurez-vous que le chemin est correct
 import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 
 export default {
   setup() {
     const authStore = useAuthStore()
     const router = useRouter()
+    const $q = useQuasar()
 
     const logout = () => {
       authStore.logout() // Appel de la méthode logout du store d'authentification
@@ -51,7 +52,11 @@ export default {
       }
     }
 
-    return { authStore, logout, handleHomeClick }
+    const toggleDarkMode = () => {
+      $q.dark.toggle()
+    }
+
+    return { authStore, logout, handleHomeClick, toggleDarkMode }
   },
 }
 </script>
